@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { getAllDiff, getStagedDiff, hasChanges, stageAll, commit } from './git.js';
+import { getAllDiff, getStagedDiff, getFileChanges, hasChanges, stageAll, commit } from './git.js';
 import { generateCommitMessage } from './llm.js';
 
 const program = new Command();
@@ -44,11 +44,23 @@ program
         process.exit(1);
       }
 
-      const diff = await getAllDiff();
+      const { additions, deletions, modifications } = await getFileChanges();
       console.log('Generating commit message...');
 
+      // Build compact summary for AI
+      let summary = '';
+      if (additions.length > 0) {
+        summary += `Added files: ${additions.join(', ')}\n`;
+      }
+      if (deletions.length > 0) {
+        summary += `Deleted files: ${deletions.join(', ')}\n`;
+      }
+      if (modifications) {
+        summary += `Changes:\n${modifications}`;
+      }
+
       const message = await generateCommitMessage({
-        diff,
+        diff: summary,
         apiKey,
         model: options.model,
         maxTokens: parseInt(options.tokens)

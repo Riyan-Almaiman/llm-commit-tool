@@ -26,8 +26,6 @@ export async function generateCommitMessage(request: CommitRequest): Promise<str
     throw new Error('No changes to commit');
   }
 
-
-
   const response = await axios.post('https://api.openai.com/v1/chat/completions', {
     model,
     messages: [
@@ -52,3 +50,4 @@ export async function generateCommitMessage(request: CommitRequest): Promise<str
 
   return message;
 }
+

@@ -24,6 +24,38 @@ export async function getAllDiff(): Promise<string> {
   return staged + unstaged;
 }
 
+export async function getFileChanges(): Promise<{ additions: string[], deletions: string[], modifications: string }> {
+  try {
+    const status = await git.status();
+    
+    const additions: string[] = [];
+    const deletions: string[] = [];
+    
+    status.files.forEach(file => {
+      if (file.index === 'A' || file.working_dir === 'A') {
+        additions.push(file.path);
+      } else if (file.index === 'D' || file.working_dir === 'D') {
+        deletions.push(file.path);
+      }
+    });
+    
+    // Get diff for modifications only (exclude additions/deletions)
+    const modifiedDiff = await git.diff(['--cached', '--diff-filter=M']);
+    
+    return {
+      additions,
+      deletions,
+      modifications: modifiedDiff
+    };
+  } catch (error) {
+    return {
+      additions: [],
+      deletions: [],
+      modifications: await getAllDiff()
+    };
+  }
+}
+
 export async function hasChanges(): Promise<boolean> {
   // Check if there are any staged changes ready to commit
   const staged = await getStagedDiff();
