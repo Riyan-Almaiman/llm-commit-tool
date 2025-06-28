@@ -1,6 +1,6 @@
 {
   "name": "@ralmaiman/llm-commit-tool",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "./dist/cli.js",
   "bin": {
     "llm-commit": "./dist/cli.js"
