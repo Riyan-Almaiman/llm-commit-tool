@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import { getAllDiff, getStagedDiff, getFileChanges, hasChanges, stageAll, commit } from './git.js';
+import {  getStagedDiff, getFileChanges, hasChanges, stageAll, commit } from './git.js';
 import { generateCommitMessage } from './llm.js';
 
 const program = new Command();
