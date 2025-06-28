@@ -1,0 +1,31 @@
+{
+  "name": "@ralmaiman/llm-commit-tool",
+  "version": "1.0.2",
+  "main": "./dist/cli.js",
+  "bin": {
+    "llm-commit": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js",
+    "clean": "rm -rf dist",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT",
+  "description": "Generate commit messages using LLMs",
+  "devDependencies": {
+    "@types/node": "^24.0.3",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "axios": "^1.10.0",
+    "commander": "^14.0.0",
+    "simple-git": "^3.28.0"
+  }
+}
